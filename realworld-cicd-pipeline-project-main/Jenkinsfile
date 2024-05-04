@@ -84,6 +84,7 @@ pipeline {
     // }
     stage("Nexus Artifact Uploader"){
         steps{
+           dir('realworld-cicd-pipeline-project-main/') {
            nexusArtifactUploader(
               nexusVersion: 'nexus3',
               protocol: 'http',
@@ -95,10 +96,11 @@ pipeline {
               artifacts: [
                   [artifactId: 'webapp',
                   classifier: '',
-                  file: "/webapp/target/webapp.war",
+                  file: "${WORKSPACE}/webapp/target/webapp.war",
                   type: 'war']
               ]
            )
+        }
         }
     }
     stage('Deploy to Development Env') {
