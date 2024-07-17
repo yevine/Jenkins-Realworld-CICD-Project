@@ -50,12 +50,19 @@
 3) Jenkins/Maven/Ansible
     - Create a Jenkins VM instance 
     - Name: `Jenkins/Maven/Ansible`
-    - AMI: `Amazon Linux 2`
+    - AMI: `Amazon Linux 2023`
     - Instance type: `t2.medium`
     - Key pair: `Select` or `create a new keypair`
     - Security Group (Edit/Open): `8080, 9100` and `22 to 0.0.0.0/0`
     - IAM instance profile: Select the `AWS-EC2FullAccess-Role`
-    - User data (Copy the following user data): https://github.com/awanmbandi/realworld-cicd-pipeline-project/blob/maven-nexus-sonarqube-jenkins-install/jenkins-install.sh
+    - User data (Copy the following user data): 
+  ```bash
+  #!/bin/bash
+  sudo yum install git -y
+  git clone https://github.com/anselmenumbisia/jjtech-maven-sonarqube-nexus-prometheus-project.git
+  cd jjtech-maven-sonarqube-nexus-prometheus-project/installations
+  sh jenkins-install.sh
+  ``` 
     - Launch Instance
 
 4) SonarQube
@@ -84,7 +91,7 @@
       - Tag 1: Name: `Name`, Value: `Dev-Env`
       - Tag 2: Name: `Environment`, Value: `dev`
     - AMI: `Amazon Linux 2`
-    - Number: `3`
+    - Number: `1`
     - Instance type: `t2.micro`
     - Key pair: `Select a keypair`
     - Security Group (Eit/Open): `8080, 9100, 9997` and `22 to 0.0.0.0/0`
@@ -97,7 +104,7 @@
       - Tag 1: Name: `Name`, Value: `Stage-Env`
       - Tag 2: Name: `Environment`, Value: `stage`
     - AMI: `Amazon Linux 2`
-    - Number: `3`
+    - Number: `1`
     - Instance type: `t2.micro`
     - Key pair: `Select a keypair`
     - Security Group (Eit/Open): `8080, 9100, 9997` and `22 to 0.0.0.0/0`
@@ -110,7 +117,7 @@
       - Tag 1: Name: `Name`, Value: `Prod-Env`
       - Tag 2: Name: `Environment`, Value: `prod`
     - AMI: `Amazon Linux 2`
-    - Number: `3`
+    - Number: `1`
     - Instance type: `t2.micro`
     - Key pair: `Select a keypair`
     - Security Group (Eit/Open): `8080, 9100, 9997` and `22 to 0.0.0.0/0`
