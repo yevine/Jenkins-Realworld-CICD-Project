@@ -22,9 +22,9 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        dir('realworld-cicd-pipeline-project-main/') {
+        //dir('realworld-cicd-pipeline-project-main/') {
         sh 'mvn clean package'
-        }
+       // }
       }
       post {
         success {
@@ -35,23 +35,23 @@ pipeline {
     }
     stage('Unit Test'){
         steps {
-         dir('realworld-cicd-pipeline-project-main/') {
+         //dir('realworld-cicd-pipeline-project-main/') {
          sh 'mvn test'
-         }
+        // }
         }
     }
     stage('Integration Test'){
         steps {
-         dir('realworld-cicd-pipeline-project-main/') {
+         //dir('realworld-cicd-pipeline-project-main/') {
           sh 'mvn verify -DskipUnitTests'
-        }
+        //}
         }
     }
     stage ('Checkstyle Code Analysis'){
         steps {
-            dir('realworld-cicd-pipeline-project-main/') {
+           // dir('realworld-cicd-pipeline-project-main/') {
             sh 'mvn checkstyle:checkstyle'
-        }
+        //}
         }
         post {
             success {
@@ -61,18 +61,18 @@ pipeline {
     }
     stage('SonarQube Inspection') {
         steps {
-            dir('realworld-cicd-pipeline-project-main/') {
+           // dir('realworld-cicd-pipeline-project-main/') {
             withSonarQubeEnv('SonarQube') { 
                 withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
                 sh """
                 mvn sonar:sonar \
-                -Dsonar.projectKey=JavaWebApp-Project \
-                -Dsonar.host.url=http://172.31.84.69:9000 \
+                -Dsonar.projectKey=prosperous-cicd-project \
+                -Dsonar.host.url=http://172.31.44.69:9000 \
                 -Dsonar.login=$SONAR_TOKEN
                 """
                 }
             }
-            }
+           // }
         }
     }
     stage('SonarQube Quality Gate') {
@@ -85,14 +85,14 @@ pipeline {
     }
     stage("Nexus Artifact Uploader"){
         steps{
-           dir('realworld-cicd-pipeline-project-main/') {
+          // dir('realworld-cicd-pipeline-project-main/') {
            nexusArtifactUploader(
               nexusVersion: 'nexus3',
               protocol: 'http',
-              nexusUrl: '172.31.90.210:8081',
+              nexusUrl: '172.31.35.251:8081',
               groupId: 'webapp',
               version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-              repository: 'maven-project-releases',  //"${NEXUS_REPOSITORY}",
+              repository: 'maven-releases',  //"${NEXUS_REPOSITORY}",
               credentialsId: "${NEXUS_CREDENTIAL_ID}",
               artifacts: [
                   [artifactId: 'webapp',
@@ -101,7 +101,7 @@ pipeline {
                   type: 'war']
               ]
            )
-        }
+        //}
         }
     }
     stage('Deploy to Development Env') {
@@ -109,11 +109,11 @@ pipeline {
             HOSTS = 'dev'
         }
         steps {
-            dir('realworld-cicd-pipeline-project-main/') {
+            //dir('realworld-cicd-pipeline-project-main/') {
             withCredentials([usernamePassword(credentialsId: 'Ansible-Credential', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
                 sh "ansible-playbook -i ${WORKSPACE}/ansible-config/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
             }
-          }
+          //}
         }
 
     }
@@ -122,11 +122,11 @@ pipeline {
             HOSTS = 'stage'
         }
         steps {
-            dir('realworld-cicd-pipeline-project-main/') {
+           // dir('realworld-cicd-pipeline-project-main/') {
             withCredentials([usernamePassword(credentialsId: 'Ansible-Credential', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
                 sh "ansible-playbook -i ${WORKSPACE}/ansible-config/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
             }
-            }
+            //}
         }
     }
     stage('Quality Assurance Approval') {
@@ -139,11 +139,11 @@ pipeline {
             HOSTS = 'prod'
         }
         steps {
-           dir('realworld-cicd-pipeline-project-main/') {
+           //dir('realworld-cicd-pipeline-project-main/') {
             withCredentials([usernamePassword(credentialsId: 'Ansible-Credential', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
                 sh "ansible-playbook -i ${WORKSPACE}/ansible-config/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
             }
-           }
+          // }
         }
          }
       }
