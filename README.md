@@ -406,7 +406,9 @@ cd /opt/splunk/bin
         - **Pipeline Maven Integration**
         - **Maven Release Plug-In**
         - **Slack Notification**
+        - **Pipeline stage view**
         - **Nexus Artifact Uploader**
+        - **blueocean**
         - **Build Timestamp (Needed for Artifact versioning)**
     - Click on `Install`
     - Once all plugins are installed
