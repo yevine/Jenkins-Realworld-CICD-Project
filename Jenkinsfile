@@ -59,22 +59,22 @@ pipeline {
             }
         }
     }
-    stage('SonarQube Inspection') {
-        steps {
-           // dir('realworld-cicd-pipeline-project-main/') {
-            //withSonarQubeEnv('SonarQube') { 
-                withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
-                sh """
-                mvn sonar:sonar \
-                -Dsonar.projectKey=prosperous-cicd-project \
-                -Dsonar.host.url=http://172.31.44.69:9000 \
-                -Dsonar.login=$SONAR_TOKEN
-                """
-                }
-            //}
-           // }
-        }
-    }
+    // stage('SonarQube Inspection') {
+    //     steps {
+    //        // dir('realworld-cicd-pipeline-project-main/') {
+    //         //withSonarQubeEnv('SonarQube') { 
+    //             withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
+    //             sh """
+    //             mvn sonar:sonar \
+    //             -Dsonar.projectKey=prosperous-cicd-project \
+    //             -Dsonar.host.url=http://172.31.44.69:9000 \
+    //             -Dsonar.login=$SONAR_TOKEN
+    //             """
+    //             }
+    //         //}
+    //        // }
+    //     }
+    // }
 //     stage('SonarQube Quality Gate') {
 //         steps {
 //           // Set a timeout for the quality gate check
@@ -85,40 +85,40 @@ pipeline {
 //     }
 
 //     }
-//     stage("Nexus Artifact Uploader"){
-//         steps{
-//           // dir('realworld-cicd-pipeline-project-main/') {
-//            nexusArtifactUploader(
-//               nexusVersion: 'nexus3',
-//               protocol: 'http',
-//               nexusUrl: '172.31.35.251:8081',
-//               groupId: 'webapp',
-//               version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-//               repository: 'maven-releases',  //"${NEXUS_REPOSITORY}",
-//               credentialsId: "${NEXUS_CREDENTIAL_ID}",
-//               artifacts: [
-//                   [artifactId: 'webapp',
-//                   classifier: '',
-//                   file: "$WORKSPACE/webapp/target/webapp.war",
-//                   type: 'war']
-//               ]
-//            )
-//         //}
-//         }
-//     }
-//     stage('Deploy to Development Env') {
-//         environment {
-//             HOSTS = 'dev'
-//         }
-//         steps {
-//             //dir('realworld-cicd-pipeline-project-main/') {
-//             withCredentials([usernamePassword(credentialsId: 'Ansible-Credential', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-//                 sh "ansible-playbook -i ${WORKSPACE}/ansible-config/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
-//             }
-//           //}
-//         }
+    stage("Nexus Artifact Uploader"){
+        steps{
+          // dir('realworld-cicd-pipeline-project-main/') {
+           nexusArtifactUploader(
+              nexusVersion: 'nexus3',
+              protocol: 'http',
+              nexusUrl: '172.31.35.251:8081',
+              groupId: 'webapp',
+              version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+              repository: 'maven-releases',  //"${NEXUS_REPOSITORY}",
+              credentialsId: "${NEXUS_CREDENTIAL_ID}",
+              artifacts: [
+                  [artifactId: 'webapp',
+                  classifier: '',
+                  file: "$WORKSPACE/webapp/target/webapp.war",
+                  type: 'war']
+              ]
+           )
+        //}
+        }
+    }
+    stage('Deploy to Development Env') {
+        environment {
+            HOSTS = 'dev'
+        }
+        steps {
+            //dir('realworld-cicd-pipeline-project-main/') {
+            withCredentials([usernamePassword(credentialsId: 'Ansible-Credential', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
+                sh "ansible-playbook -i ${WORKSPACE}/ansible-config/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
+            }
+          //}
+        }
 
-//     }
+    }
 //     stage('Deploy to Staging Env') {
 //         environment {
 //             HOSTS = 'stage'
