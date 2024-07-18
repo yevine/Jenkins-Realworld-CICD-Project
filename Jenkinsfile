@@ -113,7 +113,7 @@ pipeline {
         steps {
             //dir('realworld-cicd-pipeline-project-main/') {
             withCredentials([usernamePassword(credentialsId: 'Ansible-Credential', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-                sh "ansible-playbook -i ${WORKSPACE}/ansible-config/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
+                sh "ansible-playbook -i /var/lib/jenkins/workspace/pipeline-project/ansible-config/aws_ec2.yaml /var/lib/jenkins/workspace/pipeline-project/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
             }
           //}
         }
