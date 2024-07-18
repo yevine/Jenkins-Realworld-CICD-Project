@@ -60,32 +60,32 @@ pipeline {
             }
         }
     }
-    // stage('SonarQube Inspection') {
-    //     steps {
-    //        // dir('realworld-cicd-pipeline-project-main/') {
-    //         //withSonarQubeEnv('SonarQube') { 
-    //             withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
-    //             sh """
-    //             mvn sonar:sonar \
-    //             -Dsonar.projectKey=prosperous-cicd-project \
-    //             -Dsonar.host.url=http://172.31.44.69:9000 \
-    //             -Dsonar.login=$SONAR_TOKEN
-    //             """
-    //             }
-    //         //}
-    //        // }
-    //     }
-    // }
-//     stage('SonarQube Quality Gate') {
-//         steps {
-//           // Set a timeout for the quality gate check
-//             timeout(time: 1, unit: 'HOURS') {
-//             // Wait for the SonarQube quality gate result and abort the pipeline if it fails
-//             waitForQualityGate(abortPipeline: true)
-//         }
-//     }
+    stage('SonarQube Inspection') {
+        steps {
+           // dir('realworld-cicd-pipeline-project-main/') {
+            //withSonarQubeEnv('SonarQube') { 
+                withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
+                sh """
+                mvn sonar:sonar \
+                -Dsonar.projectKey=prosperous-cicd-project \
+                -Dsonar.host.url=http://172.31.44.69:9000 \
+                -Dsonar.login=$SONAR_TOKEN
+                """
+                }
+            //}
+           // }
+        }
+    }
+    stage('SonarQube Quality Gate') {
+        steps {
+          // Set a timeout for the quality gate check
+            timeout(time: 1, unit: 'HOURS') {
+            // Wait for the SonarQube quality gate result and abort the pipeline if it fails
+            waitForQualityGate(abortPipeline: true)
+        }
+    }
 
-//     }
+    }
     stage("Nexus Artifact Uploader"){
         steps{
           // dir('realworld-cicd-pipeline-project-main/') {
