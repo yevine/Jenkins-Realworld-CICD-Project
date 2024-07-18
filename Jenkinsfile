@@ -17,7 +17,7 @@ pipeline {
   }
   tools {
     maven 'localMaven'
-    jdk 'null'
+    //jdk 'null'
   }
   stages {
     stage('Build') {
