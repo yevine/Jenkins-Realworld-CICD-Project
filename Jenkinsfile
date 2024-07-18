@@ -47,34 +47,34 @@ pipeline {
         //}
         }
     }
-//     stage ('Checkstyle Code Analysis'){
-//         steps {
-//            // dir('realworld-cicd-pipeline-project-main/') {
-//             sh 'mvn checkstyle:checkstyle'
-//         //}
-//         }
-//         post {
-//             success {
-//                 echo 'Generated Analysis Result'
-//             }
-//         }
-//     }
-//     stage('SonarQube Inspection') {
-//         steps {
-//            // dir('realworld-cicd-pipeline-project-main/') {
-//             withSonarQubeEnv('SonarQube') { 
-//                 withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
-//                 sh """
-//                 mvn sonar:sonar \
-//                 -Dsonar.projectKey=prosperous-cicd-project \
-//                 -Dsonar.host.url=http://172.31.44.69:9000 \
-//                 -Dsonar.login=$SONAR_TOKEN
-//                 """
-//                 }
-//             }
-//            // }
-//         }
-//     }
+    stage ('Checkstyle Code Analysis'){
+        steps {
+           // dir('realworld-cicd-pipeline-project-main/') {
+            sh 'mvn checkstyle:checkstyle'
+        //}
+        }
+        post {
+            success {
+                echo 'Generated Analysis Result'
+            }
+        }
+    }
+    stage('SonarQube Inspection') {
+        steps {
+           // dir('realworld-cicd-pipeline-project-main/') {
+            withSonarQubeEnv('SonarQube') { 
+                withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
+                sh """
+                mvn sonar:sonar \
+                -Dsonar.projectKey=prosperous-cicd-project \
+                -Dsonar.host.url=http://172.31.44.69:9000 \
+                -Dsonar.login=$SONAR_TOKEN
+                """
+                }
+            }
+           // }
+        }
+    }
 //     stage('SonarQube Quality Gate') {
 //         steps {
 //           // Set a timeout for the quality gate check
