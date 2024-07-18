@@ -62,7 +62,7 @@ pipeline {
     stage('SonarQube Inspection') {
         steps {
            // dir('realworld-cicd-pipeline-project-main/') {
-            withSonarQubeEnv('SonarQube') { 
+            //withSonarQubeEnv('SonarQube') { 
                 withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
                 sh """
                 mvn sonar:sonar \
@@ -71,7 +71,7 @@ pipeline {
                 -Dsonar.login=$SONAR_TOKEN
                 """
                 }
-            }
+            //}
            // }
         }
     }
