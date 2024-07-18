@@ -63,13 +63,13 @@ pipeline {
     stage('SonarQube Inspection') {
         steps {
            // dir('realworld-cicd-pipeline-project-main/') {
-            //withSonarQubeEnv('SonarQube') { 
+            withSonarQubeEnv('SonarQube') { 
                 withCredentials([string(credentialsId: 'SonarQube-Token', variable: 'SONAR_TOKEN')]) {
                 sh """
                 mvn sonar:sonar \
-                -Dsonar.projectKey=prosperous-cicd-project \
-                -Dsonar.host.url=http://172.31.44.69:9000 \
-                -Dsonar.login=$SONAR_TOKEN
+                   -Dsonar.projectKey=test \
+                   -Dsonar.host.url=http://54.163.126.134:9000 \
+                   -Dsonar.login=4dda4b11d194591af61e6302fc3c5a0f96ddaf66  
                 """
                 }
             //}
