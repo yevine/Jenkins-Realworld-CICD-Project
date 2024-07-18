@@ -99,7 +99,7 @@ pipeline {
               artifacts: [
                   [artifactId: 'webapp',
                   classifier: '',
-                  file: "$WORKSPACE/webapp/target/webapp.war",
+                  file: "/var/lib/jenkins/workspace/pipeline-project/webapp/target/webapp.war",
                   type: 'war']
               ]
            )
