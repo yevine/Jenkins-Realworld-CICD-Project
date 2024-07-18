@@ -6,7 +6,8 @@ def COLOR_MAP = [
 pipeline {
   agent any
   environment {
-    WORKSPACE = "${env.WORKSPACE}/realworld-cicd-pipeline-project-main"
+    WORKSPACE = "${env.WORKSPACE}"
+    // WORKSPACE = "${env.WORKSPACE}/realworld-cicd-pipeline-project-main"
     NEXUS_CREDENTIAL_ID = 'Nexus-Credential'
     //NEXUS_USER = "$NEXUS_CREDS_USR"
     //NEXUS_PASSWORD = "$Nexus-Token"
@@ -99,7 +100,7 @@ pipeline {
               artifacts: [
                   [artifactId: 'webapp',
                   classifier: '',
-                  file: "/var/lib/jenkins/workspace/pipeline-project/webapp/target/webapp.war",
+                  file: "${WORKSPACE}/webapp/target/webapp.war",
                   type: 'war']
               ]
            )
@@ -113,7 +114,7 @@ pipeline {
         steps {
             //dir('realworld-cicd-pipeline-project-main/') {
             withCredentials([usernamePassword(credentialsId: 'Ansible-Credential', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-                sh "ansible-playbook -i /var/lib/jenkins/workspace/pipeline-project/ansible-config/aws_ec2.yaml /var/lib/jenkins/workspace/pipeline-project/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=/var/lib/jenkins/workspace/pipeline-project/\""
+                sh "ansible-playbook -i ${WORKSPACE}/ansible-config/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=${WORKSPACE}\""
             }
           //}
         }
@@ -131,23 +132,23 @@ pipeline {
             //}
         }
     }
-//     stage('Quality Assurance Approval') {
-//         steps {
-//             input('Do you want to proceed?')
-//         }
-//     }
-//     stage('Deploy to Production Env') {
-//         environment {
-//             HOSTS = 'prod'
-//         }
-//         steps {
-//            //dir('realworld-cicd-pipeline-project-main/') {
-//             withCredentials([usernamePassword(credentialsId: 'Ansible-Credential', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
-//                 sh "ansible-playbook -i ${WORKSPACE}/ansible-config/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
-//             }
-//           // }
-//         }
-//          }
+    stage('Quality Assurance Approval') {
+        steps {
+            input('Do you want to proceed?')
+        }
+    }
+    stage('Deploy to Production Env') {
+        environment {
+            HOSTS = 'prod'
+        }
+        steps {
+           //dir('realworld-cicd-pipeline-project-main/') {
+            withCredentials([usernamePassword(credentialsId: 'Ansible-Credential', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {
+                sh "ansible-playbook -i ${WORKSPACE}/ansible-config/aws_ec2.yaml ${WORKSPACE}/deploy.yaml --extra-vars \"ansible_user=$USER_NAME ansible_password=$PASSWORD hosts=tag_Environment_$HOSTS workspace_path=$WORKSPACE\""
+            }
+          // }
+        }
+         }
 //   post {
 //     always {
 //         echo 'Slack Notifications.'
