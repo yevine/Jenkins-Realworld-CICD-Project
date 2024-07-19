@@ -564,9 +564,9 @@ cd /opt/splunk/bin
     ![SonarQubeSetup3!](https://github.com/awanmbandi/realworld-cicd-pipeline-project/raw/zdocs/images/Screen%20Shot%202023-04-24%20at%2011.02.36%20AM.png)
     
     - Add Quality to SonarQube Project
-    -  ``NOTE:`` Make sure to update the `SonarQube` stage in your `Jenkinsfile` and Test the Pipeline so your project will be visible on the SonarQube Project Dashboard.
+  
     - Click on `Projects` 
-    - Click on your project name `JavaWebApp-Project` 
+    - Click on your `project-name` 
       - Click on `Project Settings`
       - Click on `Quality Gate`
       - Select your QG `JavaWebApp-QualityGate`
@@ -590,17 +590,14 @@ cd /opt/splunk/bin
        }
     }
     ```
-     - Run Your Pipeline To Test Your Quality Gate (It should PASS QG)
-     - **(OPTIONAL)** FAIL Your Quality Gate: Go back to SonarQube -->> Open your Project -->> Click on Quality Gates at the top -->> Select your Project Quality Gate -->> Click EDIT -->> Change the Value to “0” -->> Update Condition
-     - **(OPTIONAL)** Run/Test Your Pipeline Again and This Time Your Quality Gate Should Fail 
-     - **(OPTIONAL)** Go back and Update the Quality Gate value to 10. The Exercise was just to see how Quality Gate Works
+    
 
 ### Pipeline creation
 - Update The ``Jenkinsfile`` If Neccessary
 - Update `SonarQube IP address` in your `Jenkinsfile` On `Line 61`
-- Update the `SonarQube projectKey or name` in your `Jenkinsfile` On `Line 60`
-- Update your `Slack Channel Name` in the `Jenkinsfile` on `Line 133`
-- Update Your `Nexus IP` in the `Jenkinsfile` on `Line 80`
+- Update the `SonarQube projectKey or name` in your `Jenkinsfile` On `Line 70`
+- Update your `Slack Channel Name` in the `Jenkinsfile` on `Line 153`
+- Update Your `Nexus IP` in the `Jenkinsfile` on `Line 95`
     
     - Log into Jenkins: http://Jenkins-Public-IP:8080/
     - Click on `New Item`
