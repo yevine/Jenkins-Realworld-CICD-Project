@@ -594,7 +594,7 @@ cd /opt/splunk/bin
 
 ### Pipeline creation
 - Update The ``Jenkinsfile`` If Neccessary
-- Update `SonarQube IP address` in your `Jenkinsfile` On `Line 61`
+- Update `SonarQube IP address` in your `Jenkinsfile` On `Line 71`
 - Update the `SonarQube projectKey or name` in your `Jenkinsfile` On `Line 70`
 - Update your `Slack Channel Name` in the `Jenkinsfile` on `Line 153`
 - Update Your `Nexus IP` in the `Jenkinsfile` on `Line 95`
@@ -763,7 +763,7 @@ echo "ansibleadmin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
     - Click on the repository `Settings`
         - Click on `Webhooks`
         - Click `Add webhook`
-            - Payload URL: http://JENKINS-PUBLIC-IP-ADDRESS/github-webhook/
+            - Payload URL: http://JENKINS-PUBLIC-IP-ADDRESS:8080/github-webhook/
             - Content type: `application/json`
             - Active: Confirm it is `Enable`
             - Click on `Add Webhook`
